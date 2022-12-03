@@ -103,19 +103,15 @@ class _MyAppointmentListState extends State<MyAppointmentList> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('appointments')
-            .doc(user.email.toString())
-            .collection('pending')
-            .orderBy('date')
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        stream:
+            FirebaseFirestore.instance.collection('appointments').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
-          return snapshot.data.size == 0
+          return (snapshot.data == null)
               ? Center(
                   child: Text(
                     'No Appointment Scheduled',

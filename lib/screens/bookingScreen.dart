@@ -518,10 +518,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
   Future<void> _createAppointment() async {
     print(dateUTC + ' ' + date_Time + ':00');
-    FirebaseFirestore.instance
-        .collection('appointments')
-        .doc('doctor-patient-appointment')
-        .set({
+    FirebaseFirestore.instance.collection('appointments').doc(user.uid).set({
       'user_uid': user.uid,
       //Doctor uid;
       'doctor_uid': widget.doctorUid,
