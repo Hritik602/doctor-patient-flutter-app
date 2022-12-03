@@ -11,6 +11,8 @@ import 'package:health_and_doctor_appointment/screens/firebaseAuth.dart';
 import 'package:health_and_doctor_appointment/screens/myAppointments.dart';
 import 'package:health_and_doctor_appointment/screens/skip.dart';
 import 'package:health_and_doctor_appointment/screens/userProfile.dart';
+import 'package:health_and_doctor_appointment/screens/doctor_tab_page.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

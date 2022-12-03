@@ -480,13 +480,23 @@ class _RegisterState extends State<Register> {
       }
       await user.updateProfile(displayName: _displayName.text);
       if (dropdownvalue == "Doctor") {
-        FirebaseFirestore.instance.collection('doctors').doc(user.uid).set({
-          'name': _displayName.text,
+
+        await FirebaseFirestore.instance.collection('doctors').doc(user.uid).set({
+          'name':_displayName.text.startsWith("Dr")? _displayName.text : "Dr.${_displayName.text}",
           'birthDate': null,
           'email': user.email,
+          'profession':'dr',
           'phone': null,
           'bio': null,
           'city': null,
+          'image':"",
+          'address':'',
+          "closeHour": "",
+          "openHour" :"",
+          "rating" :"",
+          'specification':"",
+          'type':''
+
         }, SetOptions(merge: true));
 
         Navigator.pushReplacement(

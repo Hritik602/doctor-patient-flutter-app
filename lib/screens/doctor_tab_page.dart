@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:ui';
 import 'package:health_and_doctor_appointment/firestore-data/searchList.dart';
@@ -13,20 +16,20 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:typicons_flutter/typicons_flutter.dart';
 import 'package:quick_actions/quick_actions.dart';
 
-class MainPage extends StatefulWidget {
+
+
+class DoctorHomeScreen extends StatefulWidget {
   @override
-  _MainPageState createState() => _MainPageState();
+  _DoctorHomeScreenState createState() => _DoctorHomeScreenState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
   List<Widget> _pages = [
     HomePage(),
-    DoctorsList(),
-    //Center(child: Text('New Appointment')),
-    MyAppointments(),
-    UserProfile(),
+    // MyAppointments(),
+    // UserProfile(),
   ];
 
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -79,7 +82,7 @@ class _MainPageState extends State<MainPage> {
           child: SafeArea(
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8),
+              const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8),
               child: GNav(
                 curve: Curves.easeOutExpo,
                 rippleColor: Colors.grey[300],
@@ -102,24 +105,24 @@ class _MainPageState extends State<MainPage> {
                         : FlutterIcons.home_variant_outline_mco,
                     text: 'Home',
                   ),
-                  GButton(
-                    icon: FlutterIcons.search1_ant,
-                    text: 'Search',
-                  ),
-                  GButton(
-                    iconSize: 28,
-                    icon: _selectedIndex == 2
-                        ? Typicons.calendar
-                        : Typicons.calendar_outline,
-                    text: 'Schedule',
-                  ),
-                  GButton(
-                    iconSize: 29,
-                    icon: _selectedIndex == 3
-                        ? Typicons.user
-                        : Typicons.user_outline,
-                    text: 'Profile',
-                  ),
+                  // GButton(
+                  //   icon: FlutterIcons.search1_ant,
+                  //   text: 'Search',
+                  // ),
+                  // GButton(
+                  //   iconSize: 28,
+                  //   icon: _selectedIndex == 2
+                  //       ? Typicons.calendar
+                  //       : Typicons.calendar_outline,
+                  //   text: 'Schedule',
+                  // ),
+                  // GButton(
+                  //   iconSize: 29,
+                  //   icon: _selectedIndex == 3
+                  //       ? Typicons.user
+                  //       : Typicons.user_outline,
+                  //   text: 'Profile',
+                  // ),
                 ],
                 selectedIndex: _selectedIndex,
                 onTabChange: _onItemTapped,
