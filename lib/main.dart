@@ -13,6 +13,9 @@ import 'package:health_and_doctor_appointment/screens/skip.dart';
 import 'package:health_and_doctor_appointment/screens/userProfile.dart';
 import 'package:health_and_doctor_appointment/screens/doctor_tab_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+
+import 'chat_room/firebase_helper.dart';
 
 
 Future<void> main() async {
@@ -88,22 +91,29 @@ class _MyAppState extends State<MyApp> {
   }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: '/',
-      routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => user == null ? Skip() : getHomeScreen(),
-        '/login': (context) => FireBaseAuth(),
-        '/home': (context) => MainPage(),
-        '/profile': (context) => UserProfile(),
-        '/MyAppointments': (context) => MyAppointments(),
-        '/DoctorProfile': (context) => DoctorProfile(),
-        '/DoctorTabScreen': (context) => DoctorTabPage(),
-        '/DoctorFormScreen': (context) => DoctorFormScreen(),
-      },
-      theme: ThemeData(brightness: Brightness.light),
-      debugShowCheckedModeBanner: false,
-      //home: FirebaseAuthDemo(),
+    return MultiProvider(
+      providers: [
+        Provider<ChatProvider>(
+          create: (_) => ChatProvider(),
+        ),
+      ],
+      child:MaterialApp(
+        initialRoute: '/',
+        routes: {
+          // When navigating to the "/" route, build the FirstScreen widget.
+          '/': (context) => user == null ? Skip() : getHomeScreen(),
+          '/login': (context) => FireBaseAuth(),
+          '/home': (context) => MainPage(),
+          '/profile': (context) => UserProfile(),
+          '/MyAppointments': (context) => MyAppointments(),
+          '/DoctorProfile': (context) => DoctorProfile(),
+          '/DoctorTabScreen': (context) => DoctorTabPage(),
+          '/DoctorFormScreen': (context) => DoctorFormScreen(),
+        },
+        theme: ThemeData(brightness: Brightness.light),
+        debugShowCheckedModeBanner: false,
+        //home: FirebaseAuthDemo(),
+      ),
     );
   }
 }

@@ -44,6 +44,12 @@ dependencies:
   typicons_flutter:
   quick_actions:
   introduction_screen:
+  image_picker:
+  shared_preferences:
+  flutter_local_notifications:
+  photo_view:
+  firebase_storage:
+  flutter_mobile_vision:
   
 dev_dependencies:
   flutter_test:

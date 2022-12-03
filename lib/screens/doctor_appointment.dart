@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:health_and_doctor_appointment/chat_room/chat_page.dart';
 import 'package:health_and_doctor_appointment/firestore-data/myAppointmentList.dart';
 import 'package:intl/intl.dart';
 
@@ -154,9 +155,7 @@ class _DrAppointmentListState extends State<DrAppointmentList> {
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('appointments')
-            .doc(user.email.toString())
-            .collection('pending')
-            .orderBy('date')
+            // .where('doctor_uid' ,isEqualTo: user.uid)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
@@ -239,7 +238,7 @@ class _DrAppointmentListState extends State<DrAppointmentList> {
                               CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Patient name: " + document['name'],
+                                  "Patient name: " + document['user_name'],
                                   style: GoogleFonts.lato(
                                     fontSize: 16,
                                   ),
@@ -279,9 +278,14 @@ class _DrAppointmentListState extends State<DrAppointmentList> {
                                 color: Colors.black87,
                               ),
                               onPressed: () {
-                                // print(">>>>>>>>>" + document.id);
-                                // _documentID = document.id;
-                                // showAlertDialog(context);
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) =>
+                                        ChatPage(
+                                          idFrom: user.uid,
+                                          idTo:document['user_uid'] ,
+                                          appointment:document,
+                                        )
+                                    ));
                               },
                             ),
                           ],

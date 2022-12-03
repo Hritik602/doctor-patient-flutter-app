@@ -1,0 +1,10 @@
+import 'package:flutter_mobile_vision/flutter_mobile_vision.dart';
+
+class AppConstants {
+  static const appTitle = "Flutter Chat Demo";
+  static const loginTitle = "Login";
+  static const homeTitle = "Home";
+  static const settingsTitle = "Settings";
+  static const fullPhotoTitle = "Full Photo";
+
+}

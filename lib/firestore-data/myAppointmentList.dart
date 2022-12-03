@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:health_and_doctor_appointment/chat_room/chat_page.dart';
 import 'package:intl/intl.dart';
 
 class MyAppointmentList extends StatefulWidget {
@@ -227,9 +228,14 @@ class _MyAppointmentListState extends State<MyAppointmentList> {
                                       color: Colors.black87,
                                     ),
                                     onPressed: () {
-                                      // print(">>>>>>>>>" + document.id);
-                                      // _documentID = document.id;
-                                      // showAlertDialog(context);
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) =>
+                                              ChatPage(
+                                                idFrom: user.uid,
+                                                idTo:document['doctor_uid'] ,
+                                                appointment:document,
+                                              )
+                                          ));
                                     },
                                   ),
                                 ],
