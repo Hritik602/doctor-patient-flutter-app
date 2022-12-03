@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_and_doctor_appointment/screens/doctor_home_screen.dart';
 
 class DoctorFormScreen extends StatefulWidget {
-  const DoctorFormScreen({Key key}) : super(key: key);
+  final User doctorUid;
+  const DoctorFormScreen({Key key, this.doctorUid}) : super(key: key);
 
   @override
   State<DoctorFormScreen> createState() => _DoctorFormScreenState();
@@ -426,7 +428,10 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
   }
 
   void _registerToFirebase() async {
-    FirebaseFirestore.instance.collection('doctors').doc("doctor-detail").set({
+    await FirebaseFirestore.instance
+        .collection('doctors')
+        .doc(widget.doctorUid.uid)
+        .set({
       'address': _address.text,
       'openingHour': _openHour,
       'closingHour': _closeHour,

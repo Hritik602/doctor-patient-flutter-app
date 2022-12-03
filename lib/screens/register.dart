@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:health_and_doctor_appointment/screens/doctor_form_screen.dart';
 import 'package:health_and_doctor_appointment/screens/signIn.dart';
 
 class Register extends StatefulWidget {
@@ -488,8 +489,10 @@ class _RegisterState extends State<Register> {
           'city': null,
         }, SetOptions(merge: true));
 
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            '/DoctorFormScreen', (Route<dynamic> route) => false);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DoctorFormScreen(doctorUid: user)));
       } else {
         FirebaseFirestore.instance.collection('Patient').doc(user.uid).set({
           'name': _displayName.text,
