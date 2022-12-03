@@ -124,7 +124,7 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
               ),
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.number,
               controller: _openHour,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
@@ -163,7 +163,7 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
               ),
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.number,
               controller: _closeHour,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(left: 20, top: 10, bottom: 10),

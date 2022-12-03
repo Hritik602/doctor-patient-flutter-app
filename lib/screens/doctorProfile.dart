@@ -31,11 +31,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('doctors')
-              .orderBy('name')
-              .startAt([widget.doctor]).endAt(
-                  [widget.doctor + '\uf8ff']).snapshots(),
+          stream: FirebaseFirestore.instance.collection('doctors').snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
@@ -101,24 +97,24 @@ class _DoctorProfileState extends State<DoctorProfile> {
                         SizedBox(
                           height: 16,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            for (var i = 0; i < document['rating']; i++)
-                              Icon(
-                                Icons.star_rounded,
-                                color: Colors.indigoAccent,
-                                size: 30,
-                              ),
-                            if (5 - document['rating'] > 0)
-                              for (var i = 0; i < 5 - document['rating']; i++)
-                                Icon(
-                                  Icons.star_rounded,
-                                  color: Colors.black12,
-                                  size: 30,
-                                ),
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     for (var i = 0; i < document['rating']; i++)
+                        //       Icon(
+                        //         Icons.star_rounded,
+                        //         color: Colors.indigoAccent,
+                        //         size: 30,
+                        //       ),
+                        //     if (5 - document['rating'] > 0)
+                        //       for (var i = 0; i < 5 - document['rating']; i++)
+                        //         Icon(
+                        //           Icons.star_rounded,
+                        //           color: Colors.black12,
+                        //           size: 30,
+                        //         ),
+                        //   ],
+                        // ),
                         SizedBox(
                           height: 14,
                         ),
@@ -267,6 +263,8 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 MaterialPageRoute(
                                   builder: (context) => BookingScreen(
                                     doctor: document['name'],
+                                    doctorUid:document['uuid']
+
                                   ),
                                 ),
                               );

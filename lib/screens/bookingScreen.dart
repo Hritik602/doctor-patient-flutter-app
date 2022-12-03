@@ -7,8 +7,8 @@ import 'package:intl/intl.dart';
 
 class BookingScreen extends StatefulWidget {
   final String doctor;
-
-  const BookingScreen({Key key, this.doctor}) : super(key: key);
+  final String doctorUid;
+  const BookingScreen({Key key, this.doctor, this.doctorUid}) : super(key: key);
   @override
   _BookingScreenState createState() => _BookingScreenState();
 }
@@ -520,26 +520,14 @@ class _BookingScreenState extends State<BookingScreen> {
     print(dateUTC + ' ' + date_Time + ':00');
     FirebaseFirestore.instance
         .collection('appointments')
-        .doc(user.email)
-        .collection('pending')
-        .doc()
+        .doc('doctor-patient-appointment')
         .set({
-      'name': _nameController.text,
-      'phone': _phoneController.text,
-      'description': _descriptionController.text,
-      'doctor': _doctorController.text,
-      'date': DateTime.parse(dateUTC + ' ' + date_Time + ':00'),
-    }, SetOptions(merge: true));
-
-    FirebaseFirestore.instance
-        .collection('appointments')
-        .doc(user.email)
-        .collection('all')
-        .doc()
-        .set({
-      'name': _nameController.text,
-      'phone': _phoneController.text,
-      'description': _descriptionController.text,
+      'user_uid': user.uid,
+      //Doctor uid;
+      'doctor_uid': widget.doctorUid,
+      'user_name': _nameController.text,
+      'user_phone': _phoneController.text,
+      'user_description': _descriptionController.text,
       'doctor': _doctorController.text,
       'date': DateTime.parse(dateUTC + ' ' + date_Time + ':00'),
     }, SetOptions(merge: true));

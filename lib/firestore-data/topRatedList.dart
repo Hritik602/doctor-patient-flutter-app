@@ -10,15 +10,11 @@ class TopRatedList extends StatefulWidget {
 }
 
 class _TopRatedListState extends State<TopRatedList> {
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('doctors')
-            .orderBy('rating', descending: true)
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('doctors').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData)
             return Center(
@@ -28,7 +24,7 @@ class _TopRatedListState extends State<TopRatedList> {
             scrollDirection: Axis.vertical,
             physics: ClampingScrollPhysics(),
             shrinkWrap: true,
-            itemCount: 5,
+            itemCount: 1,
             itemBuilder: (context, index) {
               DocumentSnapshot doctor = snapshot.data.docs[index];
               return Padding(
@@ -100,7 +96,9 @@ class _TopRatedListState extends State<TopRatedList> {
                                     size: 20,
                                     color: Colors.indigo[400],
                                   ),
-                                  SizedBox(width: 3,),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
                                   Text(
                                     doctor['rating'].toString(),
                                     style: GoogleFonts.lato(
