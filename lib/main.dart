@@ -12,6 +12,7 @@ import 'package:health_and_doctor_appointment/screens/myAppointments.dart';
 import 'package:health_and_doctor_appointment/screens/skip.dart';
 import 'package:health_and_doctor_appointment/screens/userProfile.dart';
 import 'package:health_and_doctor_appointment/screens/doctor_tab_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 Future<void> main() async {
@@ -28,9 +29,44 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   FirebaseAuth _auth = FirebaseAuth.instance;
   User user;
+  bool isDr = false;
+  bool isPatient = false;
 
   Future<void> _getUser() async {
     user = _auth.currentUser;
+  }
+
+  getUserType() async{
+
+   await FirebaseFirestore.instance.collection('Doctor').where('uuid', isEqualTo: user.uid)
+        .snapshots().listen(
+            (data) {
+              if(data.docs.isEmpty){
+                isDr = false;
+              }else {
+                isDr = true;
+              }
+            }
+    );
+
+   await FirebaseFirestore.instance.collection('Patient').where('uuid', isEqualTo: user.uid)
+        .snapshots().listen(
+            (data) {
+          if(data.docs.isEmpty){
+            isPatient = false;
+          }else {
+            isPatient = true;
+          }
+        }
+    );
+  }
+
+  Widget getHomeScreen (){
+    if(isDr){
+      return DoctorTabPage();
+    }else {
+      return MainPage();
+    }
   }
 
   @override
@@ -40,13 +76,13 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => user == null ? Skip() : MainPage(),
+        '/': (context) => user == null ? Skip() : getHomeScreen(),
         '/login': (context) => FireBaseAuth(),
         '/home': (context) => MainPage(),
         '/profile': (context) => UserProfile(),
         '/MyAppointments': (context) => MyAppointments(),
         '/DoctorProfile': (context) => DoctorProfile(),
-        '/DoctorHomeScreen': (context) => DoctorHomeScreen(),
+        '/DoctorTabScreen': (context) => DoctorTabPage(),
         '/DoctorFormScreen': (context) => DoctorFormScreen(),
       },
       theme: ThemeData(brightness: Brightness.light),

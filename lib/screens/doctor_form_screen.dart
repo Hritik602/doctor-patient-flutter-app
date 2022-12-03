@@ -372,7 +372,7 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
                     if (_formKey.currentState.validate()) {
                       showLoaderDialog(context);
                       _registerToFirebase();
-                      _pushPage(context, DoctorHomeScreen());
+                      _pushPage(context, DoctorTabPage());
                     }
                   },
                   style: ElevatedButton.styleFrom(

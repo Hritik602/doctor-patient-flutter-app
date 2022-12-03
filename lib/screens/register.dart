@@ -482,6 +482,7 @@ class _RegisterState extends State<Register> {
       if (dropdownvalue == "Doctor") {
 
         await FirebaseFirestore.instance.collection('doctors').doc(user.uid).set({
+          'uuid':user.uid,
           'name':_displayName.text.startsWith("Dr")? _displayName.text : "Dr.${_displayName.text}",
           'birthDate': null,
           'email': user.email,
@@ -499,12 +500,12 @@ class _RegisterState extends State<Register> {
 
         }, SetOptions(merge: true));
 
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DoctorFormScreen(doctorUid: user)));
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+            DoctorFormScreen(doctorUid: user)), (Route<dynamic> route) => false);
+
       } else {
         FirebaseFirestore.instance.collection('Patient').doc(user.uid).set({
+          'uuid':user.uid,
           'name': _displayName.text,
           'birthDate': null,
           'email': user.email,

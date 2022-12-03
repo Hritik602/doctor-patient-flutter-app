@@ -47,7 +47,7 @@ class _UserDetailsState extends State<UserDetails> {
       padding: const EdgeInsets.only(top: 8.0),
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection('users')
+            .collection('Patient')
             .doc(user.uid)
             .snapshots(),
         builder: (context, snapshot) {

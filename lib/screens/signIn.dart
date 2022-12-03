@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_and_doctor_appointment/screens/register.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class SignIn extends StatefulWidget {
   @override
@@ -19,6 +21,9 @@ class _SignInState extends State<SignIn> {
   FocusNode f1 = new FocusNode();
   FocusNode f2 = new FocusNode();
   FocusNode f3 = new FocusNode();
+
+  bool isDr = false;
+  bool isPatient = false;
 
   @override
   Widget build(BuildContext context) {
@@ -321,8 +326,44 @@ class _SignInState extends State<SignIn> {
       if (!user.emailVerified) {
         await user.sendEmailVerification();
       }
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+
+      getUserType() async{
+
+       await  FirebaseFirestore.instance.collection('Doctor').where('uuid', isEqualTo: user.uid)
+            .snapshots().listen(
+                (data) {
+              if(data.docs.isEmpty){
+                isDr = false;
+              }else {
+                isDr = true;
+              }
+            }
+        );
+
+      await  FirebaseFirestore.instance.collection('Patient').where('uuid', isEqualTo: user.uid)
+            .snapshots().listen(
+                (data) {
+              if(data.docs.isEmpty){
+                isPatient = false;
+              }else {
+                isPatient = true;
+              }
+            }
+        );
+
+      if(!isDr && !isPatient){
+        return Future.error("User does not exist");
+      }else if(isDr){
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+      }else{
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/DoctorTabScreen', (Route<dynamic> route) => false);
+      }
+
+      }
+
+
     } catch (e) {
       final snackBar = SnackBar(
         content: Row(

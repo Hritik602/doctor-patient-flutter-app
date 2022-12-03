@@ -5,8 +5,6 @@ import 'package:health_and_doctor_appointment/firestore-data/notificationList.da
 import 'package:health_and_doctor_appointment/model/cardModel.dart';
 import 'package:health_and_doctor_appointment/carouselSlider.dart';
 import 'package:health_and_doctor_appointment/screens/exploreList.dart';
-import 'package:health_and_doctor_appointment/firestore-data/searchList.dart';
-import 'package:health_and_doctor_appointment/firestore-data/topRatedList.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

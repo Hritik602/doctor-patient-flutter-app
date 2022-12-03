@@ -5,7 +5,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:health_and_doctor_appointment/firestore-data/searchList.dart';
 import 'package:health_and_doctor_appointment/screens/homePage.dart';
-import 'package:health_and_doctor_appointment/screens/myAppointments.dart';
+import 'package:health_and_doctor_appointment/screens/doctor_home_screen.dart';
 import 'package:health_and_doctor_appointment/screens/userProfile.dart';
 import 'package:health_and_doctor_appointment/screens/doctorsList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,16 +18,16 @@ import 'package:quick_actions/quick_actions.dart';
 
 
 
-class DoctorHomeScreen extends StatefulWidget {
+class DoctorTabPage extends StatefulWidget {
   @override
-  _DoctorHomeScreenState createState() => _DoctorHomeScreenState();
+  _DoctorTabPageState createState() => _DoctorTabPageState();
 }
 
-class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
+class _DoctorTabPageState extends State<DoctorTabPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
   List<Widget> _pages = [
-    HomePage(),
+    DoctorHomePage(),
     // MyAppointments(),
     // UserProfile(),
   ];
