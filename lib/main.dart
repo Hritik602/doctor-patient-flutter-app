@@ -25,31 +25,47 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-// ignore: must_be_immutable
-class MyApp extends StatelessWidget {
+
+
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
   FirebaseAuth _auth = FirebaseAuth.instance;
   User user;
   bool isDr = false;
   bool isPatient = false;
-
   Future<void> _getUser() async {
     user = _auth.currentUser;
+    await getUserType();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUser();
   }
 
   getUserType() async{
 
-   await FirebaseFirestore.instance.collection('Doctor').where('uuid', isEqualTo: user.uid)
+    await FirebaseFirestore.instance.collection('doctors').where('uuid', isEqualTo: user.uid)
         .snapshots().listen(
             (data) {
-              if(data.docs.isEmpty){
-                isDr = false;
-              }else {
-                isDr = true;
-              }
-            }
+          if(data.docs.isEmpty){
+            isDr = false;
+          }else {
+            isDr = true;
+          }
+        }
     );
 
-   await FirebaseFirestore.instance.collection('Patient').where('uuid', isEqualTo: user.uid)
+    await FirebaseFirestore.instance.collection('Patient').where('uuid', isEqualTo: user.uid)
         .snapshots().listen(
             (data) {
           if(data.docs.isEmpty){
@@ -68,10 +84,8 @@ class MyApp extends StatelessWidget {
       return MainPage();
     }
   }
-
   @override
   Widget build(BuildContext context) {
-    _getUser();
     return MaterialApp(
       initialRoute: '/',
       routes: {
@@ -91,3 +105,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
