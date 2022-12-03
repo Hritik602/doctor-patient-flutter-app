@@ -80,8 +80,10 @@ class _MyAppState extends State<MyApp> {
   Widget getHomeScreen (){
     if(isDr){
       return DoctorTabPage();
-    }else {
+    }else if(isPatient) {
       return MainPage();
+    }else {
+      return FireBaseAuth();
     }
   }
   @override

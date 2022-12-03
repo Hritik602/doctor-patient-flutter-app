@@ -7,7 +7,7 @@ import 'package:health_and_doctor_appointment/firestore-data/searchList.dart';
 import 'package:health_and_doctor_appointment/screens/homePage.dart';
 import 'package:health_and_doctor_appointment/screens/doctor_home_screen.dart';
 import 'package:health_and_doctor_appointment/screens/userProfile.dart';
-import 'package:health_and_doctor_appointment/screens/doctorsList.dart';
+import 'package:health_and_doctor_appointment/screens/doctor_appointment.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,7 +28,7 @@ class _DoctorTabPageState extends State<DoctorTabPage> {
   int _selectedIndex = 0;
   List<Widget> _pages = [
     DoctorHomePage(),
-    // MyAppointments(),
+    DoctorAppointments(),
     // UserProfile(),
   ];
 
@@ -105,10 +105,10 @@ class _DoctorTabPageState extends State<DoctorTabPage> {
                         : FlutterIcons.home_variant_outline_mco,
                     text: 'Home',
                   ),
-                  // GButton(
-                  //   icon: FlutterIcons.search1_ant,
-                  //   text: 'Search',
-                  // ),
+                  GButton(
+                    icon: FlutterIcons.search1_ant,
+                    text: 'Chat Appointment',
+                  ),
                   // GButton(
                   //   iconSize: 28,
                   //   icon: _selectedIndex == 2
