@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "976083434094",
+    "project_id": "new-doctor-patient",
+    "storage_bucket": "new-doctor-patient.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976083434094:android:95cfc4fa03486f7628447f",
+        "android_client_info": {
+          "package_name": "com.example.patient_flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976083434094-thfttb29o25hvfsla4vhk7aib0776udm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABmJw31Pa0-qypl7SteRg8FnshgSdwRtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976083434094-thfttb29o25hvfsla4vhk7aib0776udm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
