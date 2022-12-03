@@ -103,8 +103,7 @@ class _MyAppointmentListState extends State<MyAppointmentList> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: StreamBuilder(
-        stream:
-            FirebaseFirestore.instance.collection('appointments').snapshots(),
+        stream: FirebaseFirestore.instance.collection('appointments').snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -135,7 +134,9 @@ class _MyAppointmentListState extends State<MyAppointmentList> {
                     return Card(
                       elevation: 2,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+
+                        },
                         child: ExpansionTile(
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -186,7 +187,7 @@ class _MyAppointmentListState extends State<MyAppointmentList> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Patient name: " + document['name'],
+                                        "Patient name: " + document['user_name'],
                                         style: GoogleFonts.lato(
                                           fontSize: 16,
                                         ),
