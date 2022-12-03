@@ -323,9 +323,10 @@ class _SignInState extends State<SignIn> {
         password: _passwordController.text,
       ))
           .user;
-      if (!user.emailVerified) {
-        await user.sendEmailVerification();
-      }
+
+      // if (!user.emailVerified) {
+      //   await user.sendEmailVerification();
+      // }
 
      await  getUserType(user);
 
@@ -342,19 +343,22 @@ class _SignInState extends State<SignIn> {
         ),
       );
       Navigator.pop(context);
-      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Scaffold.of(context).showSnackBar(snackBar);
     }
   }
 
-  getUserType(User user) async{
+ Future<void> getUserType(User user) async{
 
-    await  FirebaseFirestore.instance.collection('Doctor').where('uuid', isEqualTo: user.uid)
+    await  FirebaseFirestore.instance.collection('doctors').where('uuid', isEqualTo: user.uid)
         .snapshots().listen(
             (data) {
           if(data.docs.isEmpty){
             isDr = false;
+            return;
           }else {
-            isDr = true;
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/DoctorTabScreen', (Route<dynamic> route) => false);
+            return ;
           }
         }
     );
@@ -364,21 +368,17 @@ class _SignInState extends State<SignIn> {
             (data) {
           if(data.docs.isEmpty){
             isPatient = false;
+            return;
           }else {
             isPatient = true;
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+            return;
           }
         }
     );
 
-    if(!isDr && !isPatient){
-      return Future.error("User does not exist");
-    }else if(isDr){
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
-    }else{
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil('/DoctorTabScreen', (Route<dynamic> route) => false);
-    }
+
 
   }
 

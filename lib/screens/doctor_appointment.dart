@@ -195,7 +195,7 @@ class _DrAppointmentListState extends State<DrAppointmentList> {
                         Padding(
                           padding: const EdgeInsets.only(left: 5),
                           child: Text(
-                            document['doctor'],
+                            document['user_name'],
                             style: GoogleFonts.lato(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
