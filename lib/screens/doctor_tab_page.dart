@@ -109,7 +109,7 @@ class _DoctorTabPageState extends State<DoctorTabPage> {
                     text: 'Home',
                   ),
                   GButton(
-                    icon: FlutterIcons.search1_ant,
+                    icon:Typicons.calendar,
                     text: 'Chat Appointment',
                   ),
                   // GButton(
