@@ -327,42 +327,7 @@ class _SignInState extends State<SignIn> {
         await user.sendEmailVerification();
       }
 
-      getUserType() async{
-
-       await  FirebaseFirestore.instance.collection('Doctor').where('uuid', isEqualTo: user.uid)
-            .snapshots().listen(
-                (data) {
-              if(data.docs.isEmpty){
-                isDr = false;
-              }else {
-                isDr = true;
-              }
-            }
-        );
-
-      await  FirebaseFirestore.instance.collection('Patient').where('uuid', isEqualTo: user.uid)
-            .snapshots().listen(
-                (data) {
-              if(data.docs.isEmpty){
-                isPatient = false;
-              }else {
-                isPatient = true;
-              }
-            }
-        );
-
-      if(!isDr && !isPatient){
-        return Future.error("User does not exist");
-      }else if(isDr){
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
-      }else{
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil('/DoctorTabScreen', (Route<dynamic> route) => false);
-      }
-
-      }
-
+     await  getUserType(user);
 
     } catch (e) {
       final snackBar = SnackBar(
@@ -379,6 +344,42 @@ class _SignInState extends State<SignIn> {
       Navigator.pop(context);
       // ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  getUserType(User user) async{
+
+    await  FirebaseFirestore.instance.collection('Doctor').where('uuid', isEqualTo: user.uid)
+        .snapshots().listen(
+            (data) {
+          if(data.docs.isEmpty){
+            isDr = false;
+          }else {
+            isDr = true;
+          }
+        }
+    );
+
+    await  FirebaseFirestore.instance.collection('Patient').where('uuid', isEqualTo: user.uid)
+        .snapshots().listen(
+            (data) {
+          if(data.docs.isEmpty){
+            isPatient = false;
+          }else {
+            isPatient = true;
+          }
+        }
+    );
+
+    if(!isDr && !isPatient){
+      return Future.error("User does not exist");
+    }else if(isDr){
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+    }else{
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/DoctorTabScreen', (Route<dynamic> route) => false);
+    }
+
   }
 
   void _pushPage(BuildContext context, Widget page) {

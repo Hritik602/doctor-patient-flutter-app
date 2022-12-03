@@ -104,7 +104,10 @@ class _MyAppointmentListState extends State<MyAppointmentList> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('appointments').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('appointments')
+            .where('user_uid', isEqualTo: user.uid)
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return Center(

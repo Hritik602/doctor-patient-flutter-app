@@ -155,7 +155,7 @@ class _DrAppointmentListState extends State<DrAppointmentList> {
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('appointments')
-            // .where('doctor_uid' ,isEqualTo: user.uid)
+            .where('doctor_uid' ,isEqualTo: user.uid)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {

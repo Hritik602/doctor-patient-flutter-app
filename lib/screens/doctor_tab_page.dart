@@ -8,6 +8,7 @@ import 'package:health_and_doctor_appointment/screens/homePage.dart';
 import 'package:health_and_doctor_appointment/screens/doctor_home_screen.dart';
 import 'package:health_and_doctor_appointment/screens/userProfile.dart';
 import 'package:health_and_doctor_appointment/screens/doctor_appointment.dart';
+import 'package:health_and_doctor_appointment/screens/doctor_as_auser_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,6 +16,8 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:typicons_flutter/typicons_flutter.dart';
 import 'package:quick_actions/quick_actions.dart';
+
+import 'doctorProfile.dart';
 
 
 
@@ -29,7 +32,7 @@ class _DoctorTabPageState extends State<DoctorTabPage> {
   List<Widget> _pages = [
     DoctorHomePage(),
     DoctorAppointments(),
-    // UserProfile(),
+    DrUserProfile(),
   ];
 
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -116,13 +119,13 @@ class _DoctorTabPageState extends State<DoctorTabPage> {
                   //       : Typicons.calendar_outline,
                   //   text: 'Schedule',
                   // ),
-                  // GButton(
-                  //   iconSize: 29,
-                  //   icon: _selectedIndex == 3
-                  //       ? Typicons.user
-                  //       : Typicons.user_outline,
-                  //   text: 'Profile',
-                  // ),
+                  GButton(
+                    iconSize: 29,
+                    icon: _selectedIndex == 3
+                        ? Typicons.user
+                        : Typicons.user_outline,
+                    text: 'Profile',
+                  ),
                 ],
                 selectedIndex: _selectedIndex,
                 onTabChange: _onItemTapped,

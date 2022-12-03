@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -10,8 +11,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class DoctorProfile extends StatefulWidget {
   final String doctor;
-
-  const DoctorProfile({Key key, this.doctor}) : super(key: key);
+ final String doctorID;
+  const DoctorProfile({Key key, this.doctor, this.doctorID}) : super(key: key);
   @override
   _DoctorProfileState createState() => _DoctorProfileState();
 }
@@ -25,13 +26,22 @@ class _DoctorProfileState extends State<DoctorProfile> {
     }
   }
 
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  User user;
+
+  Future<void> _getUser() async {
+    user = _auth.currentUser;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('doctors').snapshots(),
+          stream: FirebaseFirestore.instance.collection('doctors')
+              .where('uuid' ,isEqualTo: widget.doctorID)
+              .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {

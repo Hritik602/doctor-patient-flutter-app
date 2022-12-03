@@ -46,6 +46,7 @@ class _TopRatedListState extends State<TopRatedList> {
                           MaterialPageRoute(
                             builder: (context) => DoctorProfile(
                               doctor: doctor['name'],
+                              doctorID : doctor['uuid']
                             ),
                           ),
                         );

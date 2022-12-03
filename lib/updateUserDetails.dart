@@ -63,7 +63,7 @@ class _UpdateUserDetailsState extends State<UpdateUserDetails> {
           children: [
             StreamBuilder(
               stream: FirebaseFirestore.instance
-                  .collection('users')
+                  .collection('Patient')
                   .doc(UserID)
                   .snapshots(),
               builder: (context, snapshot) {
@@ -97,9 +97,11 @@ class _UpdateUserDetailsState extends State<UpdateUserDetails> {
               height: 50,
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   FocusScope.of(context).unfocus();
-                  updateData();
+                await  updateData();
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
                   elevation: 2,
@@ -125,13 +127,14 @@ class _UpdateUserDetailsState extends State<UpdateUserDetails> {
   }
 
   Future<void> updateData() async {
-    FirebaseFirestore.instance.collection('users').doc(UserID).set({
+    FirebaseFirestore.instance.collection('Patient').doc(UserID).set({
       widget.field: _textcontroller.text,
     }, SetOptions(merge: true));
     if (widget.field.compareTo('name') == 0) {
       await user.updateProfile(displayName: _textcontroller.text);
     }
     if (widget.field.compareTo('phone') == 0) {
+      
     }
   }
 }

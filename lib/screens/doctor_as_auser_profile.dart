@@ -7,16 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_and_doctor_appointment/firestore-data/appointmentHistoryList.dart';
-import 'package:health_and_doctor_appointment/screens/userSettings.dart';
+import 'package:health_and_doctor_appointment/screens/doctor_setting.dart';
 
-class UserProfile extends StatefulWidget {
-  const UserProfile({Key key}) : super(key: key);
+class DrUserProfile extends StatefulWidget {
+  const DrUserProfile({Key key}) : super(key: key);
 
   @override
-  _UserProfileState createState() => _UserProfileState();
+  _DrUserProfileState createState() => _DrUserProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _DrUserProfileState extends State<DrUserProfile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   FirebaseAuth _auth = FirebaseAuth.instance;
   User user;
@@ -75,7 +75,7 @@ class _UserProfileState extends State<UserProfile> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => UserSettings(),
+                                  builder: (context) => DoctorSettings(),
                                 ),
                               );
                             },
@@ -234,74 +234,74 @@ class _UserProfileState extends State<UserProfile> {
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(left: 15, right: 15, top: 20),
-                padding: EdgeInsets.only(left: 20, top: 20),
-                height: MediaQuery.of(context).size.height / 5,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.blueGrey[50],
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
-                          child: Container(
-                            height: 27,
-                            width: 27,
-                            color: Colors.green[900],
-                            child: Icon(
-                              FlutterIcons.history_faw,
-                              color: Colors.white,
-                              size: 16,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Appointment History",
-                          style: GoogleFonts.lato(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.only(right: 10),
-                            alignment: Alignment.centerRight,
-                            child: SizedBox(
-                              height: 30,
-                              child: TextButton(
-                                onPressed: () {},
-                                child: Text('View all'),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Expanded(
-                      child: Scrollbar(
-                        child: Container(
-                          padding: EdgeInsets.only(left: 35, right: 15),
-                          child: SingleChildScrollView(
-                            child: AppointmentHistoryList(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   margin: EdgeInsets.only(left: 15, right: 15, top: 20),
+              //   padding: EdgeInsets.only(left: 20, top: 20),
+              //   height: MediaQuery.of(context).size.height / 5,
+              //   width: MediaQuery.of(context).size.width,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(10),
+              //     color: Colors.blueGrey[50],
+              //   ),
+              //   child: Column(
+              //     children: [
+              //       Row(
+              //         children: [
+              //           ClipRRect(
+              //             borderRadius: BorderRadius.circular(30),
+              //             child: Container(
+              //               height: 27,
+              //               width: 27,
+              //               color: Colors.green[900],
+              //               child: Icon(
+              //                 FlutterIcons.history_faw,
+              //                 color: Colors.white,
+              //                 size: 16,
+              //               ),
+              //             ),
+              //           ),
+              //           SizedBox(
+              //             width: 10,
+              //           ),
+              //           Text(
+              //             "Appointment History",
+              //             style: GoogleFonts.lato(
+              //               fontSize: 16,
+              //               fontWeight: FontWeight.bold,
+              //               color: Colors.black,
+              //             ),
+              //           ),
+              //           Expanded(
+              //             child: Container(
+              //               padding: EdgeInsets.only(right: 10),
+              //               alignment: Alignment.centerRight,
+              //               child: SizedBox(
+              //                 height: 30,
+              //                 child: TextButton(
+              //                   onPressed: () {},
+              //                   child: Text('View all'),
+              //                 ),
+              //               ),
+              //             ),
+              //           )
+              //         ],
+              //       ),
+              //       SizedBox(
+              //         height: 10,
+              //       ),
+              //       Expanded(
+              //         child: Scrollbar(
+              //           child: Container(
+              //             padding: EdgeInsets.only(left: 35, right: 15),
+              //             child: SingleChildScrollView(
+              //               child: AppointmentHistoryList(),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               SizedBox(
                 height: 30,
               ),
@@ -315,7 +315,7 @@ class _UserProfileState extends State<UserProfile> {
   Widget getBio() {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
-          .collection('Patient')
+          .collection('doctors')
           .doc(user.uid)
           .snapshots(),
       builder: (context, snapshot) {

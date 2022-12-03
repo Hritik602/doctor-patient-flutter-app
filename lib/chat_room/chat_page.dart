@@ -239,9 +239,35 @@ class ChatPageState extends State<ChatPage> {
                           style: ButtonStyle(padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(0))),
                         ),
                         margin: EdgeInsets.only(bottom: isLastMessageRight(index) ? 20 : 10, right: 10),
-                      )
+                      ) :
                     // Sticker
-                    : Container(
+            messageChat.type == TypeMessage.ocr ? Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 5,),
+                    Text(
+                      "Prescription ocr",
+                      style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 5,),
+                    Text(
+                      messageChat.content,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    SizedBox(height: 5,),
+                  ],
+                ),
+                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                width: 200,
+                decoration:
+                BoxDecoration(color: ColorConstants.primaryColor, borderRadius: BorderRadius.circular(8)),
+                margin: EdgeInsets.only(left: 10),
+              ),
+            ) : Container(
                         child: Image.asset(
                           'images/${messageChat.content}.gif',
                           width: 100,
@@ -364,19 +390,22 @@ class ChatPageState extends State<ChatPage> {
                               ),
                               margin: EdgeInsets.only(left: 10),
                             )
-                          : messageChat.type == TypeMessage.image ? Container(
+                          : messageChat.type == TypeMessage.ocr ? Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 5,),
                         Text(
                           "prescription ocr",
                           style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),
                         ),
+                        SizedBox(height: 5,),
                         Text(
                           messageChat.content,
                           style: TextStyle(color: Colors.white),
                         ),
+                        SizedBox(height: 5,),
                       ],
                     ),
                     padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -726,6 +755,7 @@ class ChatPageState extends State<ChatPage> {
         camera: _ocrCamera,
         waitTap: true,
       );
+
      chatProvider.sendMessage(texts[0].value, TypeMessage.ocr, groupChatId, currentUserId, peerId);
     } on Exception {
       texts.add( OcrText('Failed to recognize text'));
