@@ -519,7 +519,7 @@ class _BookingScreenState extends State<BookingScreen> {
   Future<void> _createAppointment() async {
     print(dateUTC + ' ' + date_Time + ':00');
 
-    FirebaseFirestore.instance.collection('appointments').doc(user.uid).set({
+    FirebaseFirestore.instance.collection('appointments').doc(idGenerator()).set({
       'user_uid': user.uid,
       'doctor_uid': widget.doctorUid,
       'user_name': _nameController.text,
@@ -529,4 +529,10 @@ class _BookingScreenState extends State<BookingScreen> {
       'date': DateTime.parse(dateUTC + ' ' + date_Time + ':00'),
     }, SetOptions(merge: true));
   }
+}
+
+
+String idGenerator() {
+  final now = DateTime.now();
+  return now.microsecondsSinceEpoch.toString();
 }
