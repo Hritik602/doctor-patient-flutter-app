@@ -50,6 +50,9 @@ dependencies:
   photo_view:
   firebase_storage:
   flutter_mobile_vision:
+  flutter_ringtone_player:
+  flutter_sms:
+  timezone:
   
 dev_dependencies:
   flutter_test:
