@@ -38,13 +38,18 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
     NotificationsHelper.init();
   }
 
+  Set<MedicineReminder> medicineReminder = {};
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Medicine Reminder"),
+        title: Text(
+          "Medicine Reminder",
+        ),
         elevation: 5,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.lightBlueAccent,
       ),
       body: SafeArea(
         minimum: EdgeInsets.all(30),
@@ -150,15 +155,63 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                     NotificationsHelper.setNotification(dateTime, newTime, 0,
                         title: medicineController.text,
                         body: medicineDescController.text);
+                    var medicineData = MedicineReminder(
+                        medicineName: medicineController.text,
+                        medicineDesc: medicineDescController.text,
+                        newTime: newTime,
+                        dateTime: dateTime);
+                    medicineReminder.add(medicineData);
+                    setState(() {});
                   },
                   child: Text("Add Reminder"),
                   style: ElevatedButton.styleFrom(),
                 ),
-              )
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              medicineReminder.isNotEmpty
+                  ? SizedBox(
+                      height: size.height,
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: medicineReminder.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              child: ListTile(
+                                title: Text(medicineReminder
+                                    .toList()[index]
+                                    .medicineName),
+                                subtitle: Text(medicineReminder
+                                        .toList()[index]
+                                        .medicineDesc +
+                                    " " +
+                                    newTime.format(context)),
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    medicineReminder.remove(
+                                        medicineReminder.toList()[index]);
+                                    setState(() {});
+                                  },
+                                  icon: Icon(Icons.delete),
+                                ),
+                              ),
+                            );
+                          }))
+                  : SizedBox(),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+class MedicineReminder {
+  String medicineName;
+  String medicineDesc;
+  TimeOfDay newTime;
+  DateTime dateTime;
+  MedicineReminder(
+      {this.medicineName, this.medicineDesc, this.newTime, this.dateTime});
 }

@@ -7,13 +7,13 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_and_doctor_appointment/carouselSlider.dart';
-import 'package:health_and_doctor_appointment/firestore-data/notificationList.dart';
 import 'package:health_and_doctor_appointment/firestore-data/searchList.dart';
 import 'package:health_and_doctor_appointment/firestore-data/topRatedList.dart';
 import 'package:health_and_doctor_appointment/model/cardModel.dart';
 import 'package:health_and_doctor_appointment/screens/add_medicine_reminder_screen.dart';
 import 'package:health_and_doctor_appointment/screens/exploreList.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -66,6 +66,13 @@ class _HomePageState extends State<HomePage> {
       },
     );
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddReminderScreen()));
+        },
+      ),
       backgroundColor: Colors.white,
       key: _scaffoldKey,
       appBar: AppBar(
@@ -95,12 +102,18 @@ class _HomePageState extends State<HomePage> {
               ),
               IconButton(
                 splashRadius: 20,
-                icon: Icon(Icons.notifications_active),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (contex) => NotificationList()));
+                icon: Icon(
+                  Icons.contact_phone,
+                  color: Colors.redAccent,
+                ),
+                onPressed: () async {
+                  Uri phone = Uri.parse('tel:+123456789');
+                  if (await launch(phone.toString())) {
+                    print("Dialer is opened");
+                  } else {
+                    //dailer is not opened
+                    print("Dialer is not opened");
+                  }
                 },
               ),
             ],
@@ -336,20 +349,6 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     height: 20,
                   ),
-                  Container(
-                      padding: EdgeInsets.only(left: 15, right: 15),
-                      child: Card(
-                        color: Colors.greenAccent.shade100,
-                        child: ListTile(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AddReminderScreen()));
-                          },
-                          title: Text("Medicine Reminder"),
-                        ),
-                      )),
                 ],
               ),
             ],
