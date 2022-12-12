@@ -1,5 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+// import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -228,7 +228,7 @@ class NotificationService {
   }
 
   Future onSelectNotification(String payload) async {
-    await FlutterRingtonePlayer.stop();
+    // await FlutterRingtonePlayer.stop();
   }
 
   Future onDidReceiveLocalNotification(
