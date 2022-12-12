@@ -45,9 +45,8 @@ class _TopRatedListState extends State<TopRatedList> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => DoctorProfile(
-                              doctor: doctor['name'],
-                              doctorID : doctor['uuid']
-                            ),
+                                doctor: doctor['name'],
+                                doctorID: doctor['uuid']),
                           ),
                         );
                       },
@@ -56,7 +55,8 @@ class _TopRatedListState extends State<TopRatedList> {
                         //mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           CircleAvatar(
-                            backgroundImage: NetworkImage(doctor['image']),
+                            backgroundImage: AssetImage("assets/doc.png") ??
+                                NetworkImage(doctor['image']),
                             //backgroundColor: Colors.blue,
                             radius: 25,
                           ),
