@@ -11,7 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class DoctorProfile extends StatefulWidget {
   final String doctor;
- final String doctorID;
+  final String doctorID;
   const DoctorProfile({Key key, this.doctor, this.doctorID}) : super(key: key);
   @override
   _DoctorProfileState createState() => _DoctorProfileState();
@@ -39,8 +39,9 @@ class _DoctorProfileState extends State<DoctorProfile> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('doctors')
-              .where('uuid' ,isEqualTo: widget.doctorID)
+          stream: FirebaseFirestore.instance
+              .collection('doctors')
+              .where('uuid', isEqualTo: widget.doctorID)
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -80,7 +81,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                           ),
                         ),
                         CircleAvatar(
-                          backgroundImage: NetworkImage(document['image']),
+                          backgroundImage: AssetImage('assets/doc.png'),
                           //backgroundColor: Colors.lightBlue[100],
                           radius: 80,
                         ),
@@ -272,10 +273,8 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => BookingScreen(
-                                    doctor: document['name'],
-                                    doctorUid:document['uuid']
-
-                                  ),
+                                      doctor: document['name'],
+                                      doctorUid: document['uuid']),
                                 ),
                               );
                             },
