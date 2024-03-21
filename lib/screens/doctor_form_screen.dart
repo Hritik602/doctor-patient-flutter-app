@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:health_and_doctor_appointment/screens/doctor_tab_page.dart';
 
@@ -120,6 +121,7 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
             //f6
             TextFormField(
               focusNode: f6,
+              readOnly: true,
               style: GoogleFonts.lato(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
@@ -127,6 +129,28 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
               keyboardType: TextInputType.number,
               controller: _openHour,
               decoration: InputDecoration(
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.indigo, // button color
+                      child: InkWell(
+                        // inkwell color
+                        child: SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: Icon(
+                            Icons.timer_outlined,
+                            color: Colors.white,
+                          ),
+                        ),
+                        onTap: () {
+                          selectTime(context, _openHour);
+                        },
+                      ),
+                    ),
+                  ),
+                ),
                 contentPadding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(90.0)),
@@ -159,6 +183,7 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
             //f7
             TextFormField(
               focusNode: f7,
+              readOnly: true,
               style: GoogleFonts.lato(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
@@ -166,6 +191,28 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
               keyboardType: TextInputType.number,
               controller: _closeHour,
               decoration: InputDecoration(
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.indigo, // button color
+                      child: InkWell(
+                        // inkwell color
+                        child: SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: Icon(
+                            Icons.timer_outlined,
+                            color: Colors.white,
+                          ),
+                        ),
+                        onTap: () {
+                          selectTime(context, _closeHour);
+                        },
+                      ),
+                    ),
+                  ),
+                ),
                 contentPadding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(90.0)),
@@ -203,6 +250,10 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
               ),
               keyboardType: TextInputType.phone,
               controller: _phone,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(10),
+              ],
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
                 border: OutlineInputBorder(
@@ -369,10 +420,14 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
                     ),
                   ),
                   onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      showLoaderDialog(context);
-                      _registerToFirebase();
-                      _pushPage(context, DoctorTabPage());
+                    if (_openHour.text == _closeHour.text) {
+                      // showAlertDialog(context,
+                      //     "Opening hour and Closing hour can't be same");
+                    } else {
+                      if (_formKey.currentState.validate()) {
+                        showLoaderDialog(context);
+                        _registerToFirebase(context);
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -427,26 +482,49 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
     );
   }
 
-  void _registerToFirebase() async {
-    await FirebaseFirestore.instance
-        .collection('doctors')
-        .doc(widget.doctorUid.uid)
-        .set({
-      'address': _address.text,
-      'openingHour': _openHour,
-      'closingHour': _closeHour,
-      'city': _city,
-      'specification': _specification,
-      'type': _type,
-    }, SetOptions(merge: true));
+  TimeOfDay currentTime = TimeOfDay.now();
+  Future<void> selectTime(
+      BuildContext context, TextEditingController controller) async {
+    TimeOfDay selectedTime = await showTimePicker(
+      context: context,
+      initialTime: currentTime,
+    );
 
-    Navigator.of(context).pushNamedAndRemoveUntil(
-        '/DoctorHomeScreen', (Route<dynamic> route) => false);
-    _isSuccess = false;
+    MaterialLocalizations localizations = MaterialLocalizations.of(context);
+    String formattedTime = localizations.formatTimeOfDay(selectedTime,
+        alwaysUse24HourFormat: false);
+
+    if (formattedTime != null) {
+      setState(() {
+        controller.text = formattedTime;
+      });
+    }
+  }
+
+  void _registerToFirebase(BuildContext context) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('doctors')
+          .doc(widget.doctorUid.uid)
+          .set({
+        'address': _address.text,
+        'openingHour': _openHour.text,
+        'closingHour': _closeHour.text,
+        'city': _city.text,
+        'specification': _specification.text,
+        'type': _type.text,
+        'phone': _phone.text,
+      }, SetOptions(merge: true));
+      _pushPage(context, DoctorTabPage());
+
+      _isSuccess = false;
+    } catch (e) {
+      print(e);
+    }
   }
 }
 
-showAlertDialog(BuildContext context) {
+showAlertDialog(BuildContext context, String text) {
   Navigator.pop(context);
   // set up the button
   Widget okButton = TextButton(
@@ -469,7 +547,7 @@ showAlertDialog(BuildContext context) {
       ),
     ),
     content: Text(
-      "Email already Exists",
+      text ?? "",
       style: GoogleFonts.lato(),
     ),
     actions: [
