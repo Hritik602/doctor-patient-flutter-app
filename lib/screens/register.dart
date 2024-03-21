@@ -280,7 +280,7 @@ class _RegisterState extends State<Register> {
                 height: 50,
                 child: ElevatedButton(
                   child: Text(
-                    "Sign In",
+                    "Sign Up",
                     style: GoogleFonts.lato(
                       color: Colors.white,
                       fontSize: 18.0,
@@ -462,6 +462,60 @@ class _RegisterState extends State<Register> {
         email: _emailController.text,
         password: _passwordController.text,
       );
+      user = credential.user;
+      if (user != null) {
+        if (!user.emailVerified) {
+          await user.sendEmailVerification();
+        }
+        await user.updateProfile(displayName: _displayName.text);
+        if (dropdownvalue == "Doctor") {
+          await FirebaseFirestore.instance
+              .collection('doctors')
+              .doc(user.uid)
+              .set({
+            'uuid': user.uid,
+            'name': _displayName.text.startsWith("Dr")
+                ? _displayName.text
+                : "Dr.${_displayName.text}",
+            'birthDate': null,
+            'email': user.email,
+            'profession': 'dr',
+            'phone': null,
+            'bio': null,
+            'city': null,
+            'image': "",
+            'address': '',
+            "closeHour": "",
+            "openHour": "",
+            "rating": "",
+            'specification': "",
+            'type': ''
+          }, SetOptions(merge: true));
+
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => DoctorFormScreen(doctorUid: user)),
+              (Route<dynamic> route) => false);
+        } else {
+          try {
+            FirebaseFirestore.instance.collection('Patient').doc(user.uid).set({
+              'uuid': user.uid,
+              'name': _displayName.text,
+              'birthDate': null,
+              'email': user.email,
+              'phone': null,
+              'bio': null,
+              'city': null,
+            }, SetOptions(merge: true));
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                '/home', (Route<dynamic> route) => false);
+          } catch (e) {
+            showAlertDialog(context);
+          }
+        }
+      } else {
+        _isSuccess = false;
+      }
     } catch (error) {
       if (error.toString().compareTo(
               '[firebase_auth/email-already-in-use] The email address is already in use by another account.') ==
@@ -471,54 +525,6 @@ class _RegisterState extends State<Register> {
             "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         print(user);
       }
-    }
-    user = credential.user;
-
-    if (user != null) {
-      if (!user.emailVerified) {
-        await user.sendEmailVerification();
-      }
-      await user.updateProfile(displayName: _displayName.text);
-      if (dropdownvalue == "Doctor") {
-
-        await FirebaseFirestore.instance.collection('doctors').doc(user.uid).set({
-          'uuid':user.uid,
-          'name':_displayName.text.startsWith("Dr")? _displayName.text : "Dr.${_displayName.text}",
-          'birthDate': null,
-          'email': user.email,
-          'profession':'dr',
-          'phone': null,
-          'bio': null,
-          'city': null,
-          'image':"",
-          'address':'',
-          "closeHour": "",
-          "openHour" :"",
-          "rating" :"",
-          'specification':"",
-          'type':''
-
-        }, SetOptions(merge: true));
-
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-            DoctorFormScreen(doctorUid: user)), (Route<dynamic> route) => false);
-
-      } else {
-        FirebaseFirestore.instance.collection('Patient').doc(user.uid).set({
-          'uuid':user.uid,
-          'name': _displayName.text,
-          'birthDate': null,
-          'email': user.email,
-          'phone': null,
-          'bio': null,
-          'city': null,
-        }, SetOptions(merge: true));
-
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
-      }
-    } else {
-      _isSuccess = false;
     }
   }
 }
