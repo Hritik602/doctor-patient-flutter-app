@@ -16,14 +16,24 @@ class _SearchListState extends State<SearchList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.blue[800],
+            ),
+            onPressed: () => Navigator.pop(context),
+          )),
       backgroundColor: Colors.white,
       body: SafeArea(
+        minimum: EdgeInsets.all(10),
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('doctors')
               .orderBy('name')
-              .startAt(['Dr. ' + widget.searchKey]).endAt(
-                  ['Dr. ' + widget.searchKey + '\uf8ff']).snapshots(),
+              .startAt(['Dr.' + widget.searchKey]).snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData)
@@ -55,7 +65,7 @@ class _SearchListState extends State<SearchList> {
                     ),
                   )
                 : Scrollbar(
-                  child: ListView.builder(
+                    child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       physics: ClampingScrollPhysics(),
                       shrinkWrap: true,
@@ -91,7 +101,8 @@ class _SearchListState extends State<SearchList> {
                                   //mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     CircleAvatar(
-                                      backgroundImage: NetworkImage(doctor['image']),
+                                      backgroundImage:
+                                          AssetImage("assets/doc.png"),
                                       //backgroundColor: Colors.blue,
                                       radius: 25,
                                     ),
@@ -101,7 +112,8 @@ class _SearchListState extends State<SearchList> {
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           doctor['name'],
@@ -159,7 +171,7 @@ class _SearchListState extends State<SearchList> {
                         );
                       },
                     ),
-                );
+                  );
           },
         ),
       ),
