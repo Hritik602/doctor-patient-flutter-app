@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:health_and_doctor_appointment/mainPage.dart';
 import 'package:health_and_doctor_appointment/screens/doctorProfile.dart';
 import 'package:health_and_doctor_appointment/screens/doctor_form_screen.dart';
-import 'package:health_and_doctor_appointment/screens/doctor_home_screen.dart';
 import 'package:health_and_doctor_appointment/screens/firebaseAuth.dart';
 import 'package:health_and_doctor_appointment/screens/myAppointments.dart';
 import 'package:health_and_doctor_appointment/screens/skip.dart';
@@ -14,7 +13,6 @@ import 'package:health_and_doctor_appointment/screens/userProfile.dart';
 import 'package:health_and_doctor_appointment/screens/doctor_tab_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-
 import 'chat_room/firebase_helper.dart';
 
 
