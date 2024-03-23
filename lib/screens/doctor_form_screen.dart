@@ -31,6 +31,7 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
   FocusNode f10 = new FocusNode();
   FocusNode f11 = new FocusNode();
   bool _isSuccess;
+  String _selectedItem = 'Cardiologist';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -369,40 +370,48 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
             ),
             //type
             //f11
-            TextFormField(
-              focusNode: f11,
-              style: GoogleFonts.lato(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
+
+            Container(
+              padding: EdgeInsets.all(5),
+              width: 400,
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey[350]),
+                  borderRadius: BorderRadius.circular(90.0),
+                  color: Colors.grey[350],
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 20,
+                      color: Colors.black.withOpacity(.2),
+                    )
+                  ]),
+              child: DropdownButton<String>(
+                hint: Text('Type'),
+                style: GoogleFonts.lato(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.black),
+                icon: SizedBox(),
+                underline: SizedBox(),
+                value: _selectedItem,
+                onChanged: (String newValue) {
+                  setState(() {
+                    _selectedItem = newValue;
+                    _type.text = newValue;
+                  });
+                },
+                items: <String>[
+                  'Cardiologist',
+                  'Dentist',
+                  'Eye Special',
+                  'Orthopaedic',
+                  'Paediatrician'
+                ].map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
-              controller: _type,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(90.0)),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.grey[350],
-                hintText: 'Type',
-                hintStyle: GoogleFonts.lato(
-                  color: Colors.black26,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              onFieldSubmitted: (value) {
-                f11.unfocus();
-              },
-              textInputAction: TextInputAction.done,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter the Type';
-                } else {
-                  return null;
-                }
-              },
-              obscureText: false,
             ),
             //Submit Button
             Container(
@@ -501,6 +510,39 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
     }
   }
 
+  void showDropdown() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select an item'),
+          content: DropdownButton<String>(
+            value: _selectedItem,
+            onChanged: (String newValue) {
+              setState(() {
+                _selectedItem = newValue;
+                _type.text = newValue;
+              });
+              Navigator.pop(context);
+            },
+            items: <String>[
+              'Cardiologist',
+              'Dentist',
+              'Eye Special',
+              'Orthopaedic',
+              'Paediatrician'
+            ].map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+
   void _registerToFirebase(BuildContext context) async {
     try {
       await FirebaseFirestore.instance
@@ -512,7 +554,7 @@ class _DoctorFormScreenState extends State<DoctorFormScreen> {
         'closingHour': _closeHour.text,
         'city': _city.text,
         'specification': _specification.text,
-        'type': _type.text,
+        'type': _selectedItem,
         'phone': _phone.text,
       }, SetOptions(merge: true));
       _pushPage(context, DoctorTabPage());
