@@ -16,7 +16,7 @@ class AddReminderScreen extends StatefulWidget {
 class _AddReminderScreenState extends State<AddReminderScreen> {
   TextEditingController medicineController = TextEditingController();
   TextEditingController medicineDescController = TextEditingController();
-  NotificationService notificationService;
+  // NotificationService notificationService;
   int selectedRadioTile;
 
   setSelectedRadioTile(int val) {
@@ -33,9 +33,9 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    notificationService = NotificationService();
-    notificationService.initialize();
-    NotificationsHelper.init();
+    // notificationService = NotificationService();
+    // notificationService.initialize();
+    // NotificationsHelper.init();
   }
 
   Set<MedicineReminder> medicineReminder = {};
