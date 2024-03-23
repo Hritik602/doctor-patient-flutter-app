@@ -55,4 +55,15 @@ class NotificationsHelper {
   static Future<void> cancelNotification(int id) async {
     await _flutterLocalNotificationsPlugin.cancel(id);
   }
+
+  /// show notification instant
+  static Future<void> showNotification(
+      {int id, String title, String body, int hour, int minutes}) async {
+    await _flutterLocalNotificationsPlugin.show(
+      id,
+      title,
+      body,
+      NotificationDetails(android: _androidNotificationDetails),
+    );
+  }
 }
