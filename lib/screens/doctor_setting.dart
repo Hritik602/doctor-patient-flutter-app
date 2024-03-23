@@ -102,8 +102,8 @@ class _UserDetailsState extends State<UserDetails> {
     'city',
     'image',
     'address',
-    "closeHour",
-    "openHour",
+    "closingHour",
+    "openingHour",
     "rating",
     'specification',
     'type'
@@ -141,8 +141,9 @@ class _UserDetailsState extends State<UserDetails> {
                     scrollDirection: Axis.vertical,
                     children: List.generate(
                       value.length,
-                          (index) => Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      (index) => Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         child: InkWell(
                           splashColor: Colors.grey.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(10),
@@ -151,9 +152,9 @@ class _UserDetailsState extends State<UserDetails> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => UpdateUserDetails(
-                                      label: labelName[index],
-                                      field: value[index],
-                                    )));
+                                          label: labelName[index],
+                                          field: value[index],
+                                        )));
                           },
                           child: Ink(
                             decoration: BoxDecoration(
@@ -165,7 +166,8 @@ class _UserDetailsState extends State<UserDetails> {
                               height: MediaQuery.of(context).size.height / 14,
                               width: MediaQuery.of(context).size.width,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     labelName[index],
@@ -228,7 +230,6 @@ class _UserDetailsState extends State<UserDetails> {
     );
   }
 }
-
 
 class UpdateUserDetails extends StatefulWidget {
   final String label;
@@ -326,7 +327,7 @@ class _UpdateUserDetailsState extends State<UpdateUserDetails> {
               child: ElevatedButton(
                 onPressed: () async {
                   FocusScope.of(context).unfocus();
-                await   updateData();
+                  await updateData();
                   Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
@@ -359,7 +360,6 @@ class _UpdateUserDetailsState extends State<UpdateUserDetails> {
     if (widget.field.compareTo('name') == 0) {
       await user.updateProfile(displayName: _textcontroller.text);
     }
-    if (widget.field.compareTo('phone') == 0) {
-    }
+    if (widget.field.compareTo('phone') == 0) {}
   }
 }
