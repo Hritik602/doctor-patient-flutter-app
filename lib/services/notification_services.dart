@@ -62,7 +62,7 @@ class NotificationService {
       {int id, String title, String body, DateTime dateTime}) async {
     var scheduledNotificationDateTime = dateTime;
 
-    await flutterLocalNotificationsPlugin.schedule(id, title, body,
+    await flutterLocalNotificationsPlugin.zonedSchedule(id, title, body,
         scheduledNotificationDateTime, getPlatformChannelSpecfics());
   }
 
