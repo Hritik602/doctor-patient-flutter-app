@@ -52,8 +52,6 @@ class _DoctorAppointmentsState extends State<DoctorAppointments> {
   }
 }
 
-
-
 class DrAppointmentList extends StatefulWidget {
   @override
   _DrAppointmentListState createState() => _DrAppointmentListState();
@@ -71,21 +69,19 @@ class _DrAppointmentListState extends State<DrAppointmentList> {
   Future<void> deleteAppointment(String docID) {
     return FirebaseFirestore.instance
         .collection('appointments')
-        .doc(user.email.toString())
-        .collection('pending')
         .doc(docID)
         .delete();
   }
 
   String _dateFormatter(String _timestamp) {
     String formattedDate =
-    DateFormat('dd-MM-yyyy').format(DateTime.parse(_timestamp));
+        DateFormat('dd-MM-yyyy').format(DateTime.parse(_timestamp));
     return formattedDate;
   }
 
   String _timeFormatter(String _timestamp) {
     String formattedTime =
-    DateFormat('kk:mm').format(DateTime.parse(_timestamp));
+        DateFormat('kk:mm').format(DateTime.parse(_timestamp));
     return formattedTime;
   }
 
@@ -135,7 +131,7 @@ class _DrAppointmentListState extends State<DrAppointmentList> {
 
   _compareDate(String _date) {
     if (_dateFormatter(DateTime.now().toString())
-        .compareTo(_dateFormatter(_date)) ==
+            .compareTo(_dateFormatter(_date)) ==
         0) {
       return true;
     } else {
@@ -155,7 +151,7 @@ class _DrAppointmentListState extends State<DrAppointmentList> {
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('appointments')
-            .where('doctor_uid' ,isEqualTo: user.uid)
+            .where('doctor_uid', isEqualTo: user.uid)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
@@ -165,138 +161,139 @@ class _DrAppointmentListState extends State<DrAppointmentList> {
           }
           return snapshot.data.size == 0
               ? Center(
-            child: Text(
-              'No Appointment Scheduled',
-              style: GoogleFonts.lato(
-                color: Colors.grey,
-                fontSize: 18,
-              ),
-            ),
-          )
+                  child: Text(
+                    'No Appointment Scheduled',
+                    style: GoogleFonts.lato(
+                      color: Colors.grey,
+                      fontSize: 18,
+                    ),
+                  ),
+                )
               : ListView.builder(
-            scrollDirection: Axis.vertical,
-            physics: ClampingScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: snapshot.data.size,
-            itemBuilder: (context, index) {
-              DocumentSnapshot document = snapshot.data.docs[index];
-              print(_compareDate(document['date'].toDate().toString()));
-              if (_checkDiff(document['date'].toDate())) {
-                deleteAppointment(document.id);
-              }
-              return Card(
-                elevation: 2,
-                child: InkWell(
-                  onTap: () {},
-                  child: ExpansionTile(
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: Text(
-                            document['user_name'],
-                            style: GoogleFonts.lato(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                  scrollDirection: Axis.vertical,
+                  physics: ClampingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.size,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot document = snapshot.data.docs[index];
+                    print(_compareDate(document['date'].toDate().toString()));
+                    if (_checkDiff(document['date'].toDate())) {
+                      deleteAppointment(document.id);
+                    }
+                    return Card(
+                      elevation: 2,
+                      child: InkWell(
+                        onTap: () {},
+                        child: ExpansionTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5),
+                                child: Text(
+                                  document['user_name'],
+                                  style: GoogleFonts.lato(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                _compareDate(
+                                        document['date'].toDate().toString())
+                                    ? "TODAY"
+                                    : "",
+                                style: GoogleFonts.lato(
+                                    color: Colors.green,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                width: 0,
+                              ),
+                            ],
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: Text(
+                              _dateFormatter(
+                                  document['date'].toDate().toString()),
+                              style: GoogleFonts.lato(),
                             ),
                           ),
-                        ),
-                        Text(
-                          _compareDate(
-                              document['date'].toDate().toString())
-                              ? "TODAY"
-                              : "",
-                          style: GoogleFonts.lato(
-                              color: Colors.green,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          width: 0,
-                        ),
-                      ],
-                    ),
-                    subtitle: Padding(
-                      padding: const EdgeInsets.only(left: 5),
-                      child: Text(
-                        _dateFormatter(
-                            document['date'].toDate().toString()),
-                        style: GoogleFonts.lato(),
-                      ),
-                    ),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 20, right: 10, left: 16),
-                        child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Patient name: " + document['user_name'],
-                                  style: GoogleFonts.lato(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "Time: " +
-                                      _timeFormatter(
-                                        document['date']
-                                            .toDate()
-                                            .toString(),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 20, right: 10, left: 16),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Patient name: " +
+                                            document['user_name'],
+                                        style: GoogleFonts.lato(
+                                          fontSize: 16,
+                                        ),
                                       ),
-                                  style: GoogleFonts.lato(
-                                    fontSize: 16,
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        "Time: " +
+                                            _timeFormatter(
+                                              document['date']
+                                                  .toDate()
+                                                  .toString(),
+                                            ),
+                                        style: GoogleFonts.lato(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            IconButton(
-                              tooltip: 'Delete Appointment',
-                              icon: Icon(
-                                Icons.delete,
-                                color: Colors.black87,
+                                  IconButton(
+                                    tooltip: 'Delete Appointment',
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.black87,
+                                    ),
+                                    onPressed: () {
+                                      print(">>>>>>>>>" + document.id);
+                                      _documentID = document.id;
+                                      showAlertDialog(context);
+                                    },
+                                  ),
+                                  IconButton(
+                                    tooltip: 'Chat ',
+                                    icon: Icon(
+                                      Icons.chat,
+                                      color: Colors.black87,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ChatPage(
+                                                    idFrom: user.uid,
+                                                    idTo: document['user_uid'],
+                                                    appointment: document,
+                                                  )));
+                                    },
+                                  ),
+                                ],
                               ),
-                              onPressed: () {
-                                print(">>>>>>>>>" + document.id);
-                                _documentID = document.id;
-                                showAlertDialog(context);
-                              },
-                            ),
-                            IconButton(
-                              tooltip: 'Chat ',
-                              icon: Icon(
-                                Icons.chat,
-                                color: Colors.black87,
-                              ),
-                              onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) =>
-                                        ChatPage(
-                                          idFrom: user.uid,
-                                          idTo:document['user_uid'] ,
-                                          appointment:document,
-                                        )
-                                    ));
-                              },
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
+                    );
+                  },
+                );
         },
       ),
     );

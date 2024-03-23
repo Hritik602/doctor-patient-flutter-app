@@ -22,8 +22,6 @@ class _MyAppointmentListState extends State<MyAppointmentList> {
   Future<void> deleteAppointment(String docID) {
     return FirebaseFirestore.instance
         .collection('appointments')
-        .doc(user.email.toString())
-        .collection('pending')
         .doc(docID)
         .delete();
   }
@@ -138,9 +136,7 @@ class _MyAppointmentListState extends State<MyAppointmentList> {
                     return Card(
                       elevation: 2,
                       child: InkWell(
-                        onTap: () {
-
-                        },
+                        onTap: () {},
                         child: ExpansionTile(
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,7 +187,8 @@ class _MyAppointmentListState extends State<MyAppointmentList> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Patient name: " + document['user_name'],
+                                        "Patient name: " +
+                                            document['user_name'],
                                         style: GoogleFonts.lato(
                                           fontSize: 16,
                                         ),
@@ -231,14 +228,15 @@ class _MyAppointmentListState extends State<MyAppointmentList> {
                                       color: Colors.black87,
                                     ),
                                     onPressed: () {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) =>
-                                              ChatPage(
-                                                idFrom: user.uid,
-                                                idTo:document['doctor_uid'] ,
-                                                appointment:document,
-                                              )
-                                          ));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ChatPage(
+                                                    idFrom: user.uid,
+                                                    idTo:
+                                                        document['doctor_uid'],
+                                                    appointment: document,
+                                                  )));
                                     },
                                   ),
                                 ],
